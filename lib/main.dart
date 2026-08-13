@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'screens/dev/design_preview_screen.dart';
 import 'utils/app_routes.dart';
 import 'utils/app_theme.dart';
 
