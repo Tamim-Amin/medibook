@@ -8,6 +8,9 @@ class AppRoutes {
   // Day 1 only — remove once the real splash screen exists (Day 3).
   static const String designPreview = '/design-preview';
 
+  //Day 2 only - remove once the real screens exist(Day 3)
+  static const String widgetGallery = '/widget-gallery';
+
   // Day 3
   static const String splash = '/';
   static const String onboarding = '/onboarding';

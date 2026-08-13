@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'screens/dev/widget_gallery_screen.dart';
 import 'utils/app_routes.dart';
 import 'utils/app_theme.dart';
 
@@ -33,12 +34,12 @@ class _MediBookAppState extends State<MediBookApp> {
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: _themeMode,
-      initialRoute: AppRoutes.designPreview,
+      initialRoute: AppRoutes.widgetGallery,
       routes: <String, WidgetBuilder>{
-        // TODO(Day 3): remove designPreview and register splash, onboarding,
+        // TODO(Day 3): remove the dev routes and register splash, onboarding,
         // welcome, login, register and the main shell here.
-        AppRoutes.designPreview: (BuildContext context) =>
-            DesignPreviewScreen(onToggleTheme: _toggleTheme),
+        AppRoutes.widgetGallery: (BuildContext context) =>
+            WidgetGalleryScreen(onToggleTheme: _toggleTheme),
       },
     );
   }
