@@ -1,75 +1,46 @@
 import 'package:flutter/material.dart';
 
+import 'screens/dev/design_preview_screen.dart';
+import 'utils/app_routes.dart';
+import 'utils/app_theme.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(const MediBookApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MediBookApp extends StatefulWidget {
+  const MediBookApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  State<MediBookApp> createState() => _MediBookAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class _MediBookAppState extends State<MediBookApp> {
+  // TODO(Day 7): replace this local state with ThemeProvider + SharedPreferences.
+  ThemeMode _themeMode = ThemeMode.light;
 
-
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
+  void _toggleTheme() {
     setState(() {
-
-      _counter++;
+      _themeMode =
+      _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: AppBar(
-
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-
-        title: Text(widget.title),
-      ),
-      body: Center(
-
-        child: Column(
-
-          mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+    return MaterialApp(
+      title: 'MediBook',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: _themeMode,
+      initialRoute: AppRoutes.designPreview,
+      routes: <String, WidgetBuilder>{
+        // TODO(Day 3): remove designPreview and register splash, onboarding,
+        // welcome, login, register and the main shell here.
+        AppRoutes.designPreview: (BuildContext context) =>
+            DesignPreviewScreen(onToggleTheme: _toggleTheme),
+      },
     );
   }
 }
