@@ -183,7 +183,7 @@ class SkeletonList extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: count,
-      separatorBuilder: (_, __) => SizedBox(height: spacing),
+      separatorBuilder: (_, _) => SizedBox(height: spacing),
       itemBuilder: (BuildContext context, int index) =>
           itemBuilder?.call(context) ?? const DoctorCardSkeleton(),
     );
