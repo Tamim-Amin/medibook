@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../utils/app_routes.dart';
 import '../utils/app_text_styles.dart';
 import '../utils/context_colors.dart';
 import 'appointments/appointments_screen.dart';
@@ -35,10 +36,8 @@ class _MainShellState extends State<MainShell> {
     return Scaffold(
       body: IndexedStack(index: _index, children: _tabs),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO(Day 4): navigate to the doctor listing screen.
-          _select(0);
-        },
+        onPressed: () => Navigator.pushNamed(context, AppRoutes.doctorList),
+        tooltip: 'Find a doctor',
         shape: const CircleBorder(),
         child: const Icon(Icons.search_rounded),
       ),
