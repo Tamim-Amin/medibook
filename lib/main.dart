@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'models/doctor.dart';
 import 'providers/auth_provider.dart';
+import 'providers/doctor_provider.dart';
+import 'providers/favorites_provider.dart';
 import 'providers/theme_provider.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/register_screen.dart';
 import 'screens/auth/welcome_screen.dart';
+import 'screens/doctors/doctor_list_screen.dart';
+import 'screens/doctors/doctor_profile_screen.dart';
 import 'screens/main_shell.dart';
 import 'screens/onboarding/onboarding_screen.dart';
+import 'screens/profile/favorites_screen.dart';
 import 'screens/splash_screen.dart';
 import 'utils/app_routes.dart';
 import 'utils/app_theme.dart';
@@ -26,7 +32,9 @@ class MediBookApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
         ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
-        // TODO(Day 4): DoctorProvider, FavoritesProvider
+        ChangeNotifierProvider<DoctorProvider>(create: (_) => DoctorProvider()),
+        ChangeNotifierProvider<FavoritesProvider>(
+            create: (_) => FavoritesProvider()),
         // TODO(Day 5): AppointmentProvider
       ],
       child: Consumer<ThemeProvider>(
@@ -45,7 +53,20 @@ class MediBookApp extends StatelessWidget {
               AppRoutes.login: (_) => const LoginScreen(),
               AppRoutes.register: (_) => const RegisterScreen(),
               AppRoutes.main: (_) => const MainShell(),
-              // TODO(Day 4): doctorList, doctorProfile, favorites
+              AppRoutes.favorites: (_) => const FavoritesScreen(),
+              AppRoutes.doctorList: (BuildContext context) {
+                final Object? args =
+                    ModalRoute.of(context)?.settings.arguments;
+                return DoctorListScreen(
+                  initialSpecialty: args is String ? args : null,
+                );
+              },
+              AppRoutes.doctorProfile: (BuildContext context) {
+                final Doctor doctor = ModalRoute.of(context)!
+                    .settings
+                    .arguments! as Doctor;
+                return DoctorProfileScreen(doctor: doctor);
+              },
               // TODO(Day 5): booking, bookingConfirmation
               // TODO(Day 6): centerDetails
               // TODO(Day 7): editProfile
