@@ -10,6 +10,9 @@ import '../../utils/context_colors.dart';
 import '../../widgets/avatar_image.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/skeleton_loader.dart';
+import '../../main.dart';
+import '../../providers/auth_provider.dart';
+import '../../utils/app_routes.dart';
 
 /// Full profile for one doctor, including the availability rules that drive
 /// the serial-based booking system.
