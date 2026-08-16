@@ -39,6 +39,23 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
     if (mounted) setState(() => _isLoading = false);
   }
 
+  Future<void> _startBooking() async {
+    final bool isLoggedIn = context.read<AuthProvider>().isLoggedIn;
+
+    if (!isLoggedIn) {
+      final Object? result =
+          await Navigator.pushNamed(context, AppRoutes.login);
+      if (!mounted || result != true) return;
+    }
+
+    if (!mounted) return;
+    Navigator.pushNamed(
+      context,
+      AppRoutes.booking,
+      arguments: BookingArgs(doctor: widget.doctor),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final Doctor doctor = widget.doctor;
@@ -167,12 +184,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
                   label: 'Book Appointment',
                   icon: Icons.calendar_month_outlined,
                   onPressed: () {
-                    // TODO(Day 5): push AppRoutes.booking with this doctor,
-                    // behind the login gate.
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Booking is being set up.')),
-                    );
+                    _startBooking();
                   },
                 ),
               ),
