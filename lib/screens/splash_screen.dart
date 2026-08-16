@@ -9,6 +9,7 @@ import '../utils/app_routes.dart';
 import '../utils/app_text_styles.dart';
 import '../utils/prefs_keys.dart';
 import '../providers/favorites_provider.dart';
+import '../providers/appointment_provider.dart';
 
 /// First screen shown on launch.
 ///
@@ -34,6 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final AuthProvider auth = context.read<AuthProvider>();
     final ThemeProvider theme = context.read<ThemeProvider>();
     final FavoritesProvider favorite = context.read<FavoritesProvider>();
+    final AppointmentProvider appointment = context.read<AppointmentProvider>();
 
     // Branding pause + real loading, whichever takes longer.
     final Future<void> minimumDelay =
@@ -42,6 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await theme.load();
     await auth.loadSession();
     await favorite.load();
+    await appointment.load();
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final bool seenOnboarding = prefs.getBool(PrefsKeys.seenOnboarding) ?? false;
