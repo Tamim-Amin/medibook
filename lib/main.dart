@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'models/appointment.dart';
 import 'models/doctor.dart';
+import 'providers/appointment_provider.dart';
 import 'providers/auth_provider.dart';
 import 'providers/doctor_provider.dart';
 import 'providers/favorites_provider.dart';
@@ -9,6 +11,8 @@ import 'providers/theme_provider.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/register_screen.dart';
 import 'screens/auth/welcome_screen.dart';
+import 'screens/booking/booking_confirmation_screen.dart';
+import 'screens/booking/booking_screen.dart';
 import 'screens/doctors/doctor_list_screen.dart';
 import 'screens/doctors/doctor_profile_screen.dart';
 import 'screens/main_shell.dart';
@@ -35,7 +39,8 @@ class MediBookApp extends StatelessWidget {
         ChangeNotifierProvider<DoctorProvider>(create: (_) => DoctorProvider()),
         ChangeNotifierProvider<FavoritesProvider>(
             create: (_) => FavoritesProvider()),
-        // TODO(Day 5): AppointmentProvider
+        ChangeNotifierProvider<AppointmentProvider>(
+            create: (_) => AppointmentProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (BuildContext context, ThemeProvider theme, Widget? child) {
@@ -52,8 +57,12 @@ class MediBookApp extends StatelessWidget {
               AppRoutes.welcome: (_) => const WelcomeScreen(),
               AppRoutes.login: (_) => const LoginScreen(),
               AppRoutes.register: (_) => const RegisterScreen(),
-              AppRoutes.main: (_) => const MainShell(),
               AppRoutes.favorites: (_) => const FavoritesScreen(),
+              AppRoutes.main: (BuildContext context) {
+                final Object? args =
+                    ModalRoute.of(context)?.settings.arguments;
+                return MainShell(initialIndex: args is int ? args : 0);
+              },
               AppRoutes.doctorList: (BuildContext context) {
                 final Object? args =
                     ModalRoute.of(context)?.settings.arguments;
@@ -62,12 +71,26 @@ class MediBookApp extends StatelessWidget {
                 );
               },
               AppRoutes.doctorProfile: (BuildContext context) {
-                final Doctor doctor = ModalRoute.of(context)!
-                    .settings
-                    .arguments! as Doctor;
+                final Doctor doctor =
+                    ModalRoute.of(context)!.settings.arguments! as Doctor;
                 return DoctorProfileScreen(doctor: doctor);
               },
-              // TODO(Day 5): booking, bookingConfirmation
+              AppRoutes.booking: (BuildContext context) {
+                final Object? args =
+                    ModalRoute.of(context)!.settings.arguments;
+                if (args is BookingArgs) {
+                  return BookingScreen(
+                    doctor: args.doctor,
+                    rescheduleFrom: args.rescheduleFrom,
+                  );
+                }
+                return BookingScreen(doctor: args! as Doctor);
+              },
+              AppRoutes.bookingConfirmation: (BuildContext context) {
+                final Appointment appointment =
+                    ModalRoute.of(context)!.settings.arguments! as Appointment;
+                return BookingConfirmationScreen(appointment: appointment);
+              },
               // TODO(Day 6): centerDetails
               // TODO(Day 7): editProfile
             },
@@ -76,4 +99,15 @@ class MediBookApp extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Route arguments for the booking screen.
+///
+/// A plain [Doctor] is enough for a new booking; rescheduling also needs the
+/// appointment being replaced.
+class BookingArgs {
+  const BookingArgs({required this.doctor, this.rescheduleFrom});
+
+  final Doctor doctor;
+  final Appointment? rescheduleFrom;
 }

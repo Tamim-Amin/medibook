@@ -13,14 +13,18 @@ import 'profile/profile_screen.dart';
 /// [IndexedStack] is used instead of swapping widgets so each tab keeps its
 /// scroll position and state when the user switches away and back.
 class MainShell extends StatefulWidget {
-  const MainShell({super.key});
+  const MainShell({super.key, this.initialIndex = 0});
+
+  /// Lets other screens land the user on a specific tab — the booking
+  /// confirmation screen uses index 1 to open My Appointments.
+  final int initialIndex;
 
   @override
   State<MainShell> createState() => _MainShellState();
 }
 
 class _MainShellState extends State<MainShell> {
-  int _index = 0;
+  late int _index = widget.initialIndex;
 
   static const List<Widget> _tabs = <Widget>[
     HomeScreen(),
