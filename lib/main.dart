@@ -21,6 +21,8 @@ import 'screens/profile/favorites_screen.dart';
 import 'screens/splash_screen.dart';
 import 'utils/app_routes.dart';
 import 'utils/app_theme.dart';
+import 'models/diagnostic_center.dart';
+import 'screens/diagnostics/center_details_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -91,7 +93,11 @@ class MediBookApp extends StatelessWidget {
                     ModalRoute.of(context)!.settings.arguments! as Appointment;
                 return BookingConfirmationScreen(appointment: appointment);
               },
-              // TODO(Day 6): centerDetails
+              AppRoutes.centerDetails: (BuildContext context) {
+                final DiagnosticCenter center =
+                    ModalRoute.of(context)!.settings.arguments! as DiagnosticCenter;
+                return CenterDetailsScreen(center: center);
+              },
               // TODO(Day 7): editProfile
             },
           );
