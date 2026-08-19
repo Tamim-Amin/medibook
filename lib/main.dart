@@ -23,6 +23,7 @@ import 'utils/app_routes.dart';
 import 'utils/app_theme.dart';
 import 'models/diagnostic_center.dart';
 import 'screens/diagnostics/center_details_screen.dart';
+import 'screens/profile/edit_profile_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -98,7 +99,7 @@ class MediBookApp extends StatelessWidget {
                     ModalRoute.of(context)!.settings.arguments! as DiagnosticCenter;
                 return CenterDetailsScreen(center: center);
               },
-              // TODO(Day 7): editProfile
+              AppRoutes.editProfile: (_) => const EditProfileScreen(),
             },
           );
         },
