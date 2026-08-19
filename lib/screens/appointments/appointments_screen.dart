@@ -24,13 +24,13 @@ class AppointmentsScreen extends StatefulWidget {
 }
 
 class _AppointmentsScreenState extends State<AppointmentsScreen> {
-  @override
+    @override
   void initState() {
     super.initState();
     // Reschedule needs the full Doctor object, which lives in DoctorProvider —
     // make sure it is loaded even if the user opened this tab first.
-    Future<void>.microtask(
-            () => context.read<DoctorProvider>().loadDoctors());
+    final DoctorProvider doctors = context.read<DoctorProvider>();
+    Future<void>.microtask(() => doctors.loadDoctors());
   }
 
   Future<void> _cancel(Appointment appointment) async {

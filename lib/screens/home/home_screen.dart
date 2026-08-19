@@ -24,12 +24,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
+    @override
   void initState() {
     super.initState();
-    // Cannot call notifyListeners() during build, so defer to the next frame.
-    Future<void>.microtask(
-            () => context.read<DoctorProvider>().loadDoctors());
+    final DoctorProvider doctors = context.read<DoctorProvider>();
+    Future<void>.microtask(() => doctors.loadDoctors());
   }
 
   void _openList({String? specialty}) {
