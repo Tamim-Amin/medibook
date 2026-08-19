@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/appointment_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/favorites_provider.dart';
 import '../../providers/theme_provider.dart';
@@ -13,9 +14,6 @@ import '../../widgets/avatar_image.dart';
 import '../../widgets/empty_state_view.dart';
 import '../../widgets/primary_button.dart';
 
-/// Profile tab.
-///
-/// Day 7 adds Edit Profile on top of this.
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -54,6 +52,8 @@ class ProfileScreen extends StatelessWidget {
     final AuthProvider auth = context.watch<AuthProvider>();
     final ThemeProvider theme = context.watch<ThemeProvider>();
     final int favoriteCount = context.watch<FavoritesProvider>().count;
+    final int upcomingCount =
+        context.watch<AppointmentProvider>().upcoming.length;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
@@ -78,18 +78,34 @@ class ProfileScreen extends StatelessWidget {
           const SizedBox(height: 18),
           _MenuCard(
             children: <Widget>[
+              if (auth.isLoggedIn)
+                _MenuTile(
+                  icon: Icons.edit_outlined,
+                  title: 'Edit Profile',
+                  onTap: () =>
+                      Navigator.pushNamed(context, AppRoutes.editProfile),
+                ),
               _MenuTile(
                 icon: Icons.favorite_border_rounded,
                 title: 'Favourite Doctors',
                 trailing: favoriteCount == 0 ? null : '$favoriteCount',
-                onTap: () =>
-                    Navigator.pushNamed(context, AppRoutes.favorites),
+                onTap: () => Navigator.pushNamed(context, AppRoutes.favorites),
+              ),
+              _MenuTile(
+                icon: Icons.event_note_outlined,
+                title: 'Upcoming Appointments',
+                trailing: upcomingCount == 0 ? null : '$upcomingCount',
+                onTap: () => Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRoutes.main,
+                      (Route<dynamic> r) => false,
+                  arguments: 1,
+                ),
               ),
               _MenuTile(
                 icon: Icons.search_rounded,
                 title: 'Find a Doctor',
-                onTap: () =>
-                    Navigator.pushNamed(context, AppRoutes.doctorList),
+                onTap: () => Navigator.pushNamed(context, AppRoutes.doctorList),
               ),
             ],
           ),
@@ -108,6 +124,24 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 subtitle: Text(
                   'Saved on this device',
+                  style: AppTextStyles.caption
+                      .copyWith(color: context.cTextSecondary),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          _MenuCard(
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.info_outline, color: context.cPrimary),
+                title: Text(
+                  'About MediBook',
+                  style:
+                  AppTextStyles.body.copyWith(color: context.cTextPrimary),
+                ),
+                subtitle: Text(
+                  'Version 1.0.0 · Works fully offline',
                   style: AppTextStyles.caption
                       .copyWith(color: context.cTextSecondary),
                 ),
