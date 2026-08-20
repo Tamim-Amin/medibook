@@ -179,9 +179,9 @@ HOW TO ADD YOUR SCREENSHOTS
 
 ### Booking — the core flow
 
-| Serial Preview | Fully Booked | Confirmation |
+| Serial Preview | Confirmation |
 |:---:|:---:|:---:|
-| <img src="screenshots/07_booking.png" width="230"> | <img src="screenshots/08_booking_full.png" width="230"> | <img src="screenshots/09_confirmation.png" width="230"> |
+| <img src="screenshots/07_booking.png" width="230"> |  <img src="screenshots/09_confirmation.png" width="230"> |
 
 ### Management & Extras
 
