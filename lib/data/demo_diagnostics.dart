@@ -1,7 +1,11 @@
 import '../models/diagnostic_center.dart';
 import '../models/price_item.dart';
 
-/// Static demo diagnostic centres with their test and pharmacy price lists.
+/// Static demo diagnostic centres in Sylhet, with test and pharmacy price lists.
+///
+/// NOTE: all prices here are fictional sample data created for this course
+/// project. Centre names are real Sylhet establishments used only to make the
+/// demo feel realistic — no actual price list is represented.
 const List<DiagnosticCenter> kDemoCenters = <DiagnosticCenter>[
   DiagnosticCenter(
     id: 'c1',
@@ -74,6 +78,127 @@ const List<DiagnosticCenter> kDemoCenters = <DiagnosticCenter>[
       PriceItem(name: 'Bexitrol F', price: 480, unit: 'per inhaler'),
       PriceItem(name: 'Calbo-D', price: 160, unit: 'per strip of 10'),
       PriceItem(name: 'Zimax 500mg', price: 220, unit: 'per strip of 3'),
+    ],
+  ),
+  DiagnosticCenter(
+    id: 'c4',
+    name: 'Labaid Diagnostic',
+    location: 'Subid Bazar, Sylhet',
+    rating: 4.7,
+    openingHours: '7:00 AM – 10:00 PM',
+    tests: <PriceItem>[
+      PriceItem(name: 'ECG', price: 550, unit: 'per test'),
+      PriceItem(name: 'Echocardiogram', price: 2500, unit: 'per test'),
+      PriceItem(name: 'ETT (Treadmill Test)', price: 3000, unit: 'per test'),
+      PriceItem(name: 'CBC (Complete Blood Count)', price: 450, unit: 'per test'),
+      PriceItem(name: 'HbA1c', price: 1100, unit: 'per test'),
+      PriceItem(name: 'Ultrasonogram (KUB)', price: 1250, unit: 'per scan'),
+      PriceItem(name: 'Serum Electrolytes', price: 1200, unit: 'per panel'),
+      PriceItem(name: 'X-Ray (Chest P/A)', price: 750, unit: 'per plate'),
+    ],
+    medicines: <PriceItem>[
+      PriceItem(name: 'Napa 500mg', price: 12, unit: 'per strip of 10'),
+      PriceItem(name: 'Bisocor 2.5mg', price: 130, unit: 'per strip of 10'),
+      PriceItem(name: 'Atova 10mg', price: 180, unit: 'per strip of 10'),
+      PriceItem(name: 'Cardipin 5mg', price: 95, unit: 'per strip of 10'),
+      PriceItem(name: 'Comet 500mg', price: 60, unit: 'per strip of 10'),
+      PriceItem(name: 'Ecosprin 75mg', price: 40, unit: 'per strip of 10'),
+    ],
+  ),
+  DiagnosticCenter(
+    id: 'c5',
+    name: 'Sylhet Diagnostic Complex',
+    location: 'Chouhatta, Sylhet',
+    rating: 4.2,
+    openingHours: '8:00 AM – 9:30 PM',
+    tests: <PriceItem>[
+      PriceItem(name: 'CBC (Complete Blood Count)', price: 350, unit: 'per test'),
+      PriceItem(name: 'Blood Sugar (Random)', price: 200, unit: 'per test'),
+      PriceItem(name: 'Widal Test', price: 400, unit: 'per test'),
+      PriceItem(name: 'Dengue NS1 Antigen', price: 800, unit: 'per test'),
+      PriceItem(name: 'Urine C/S', price: 700, unit: 'per test'),
+      PriceItem(name: 'X-Ray (Abdomen)', price: 600, unit: 'per plate'),
+      PriceItem(name: 'Ultrasonogram (Whole Abdomen)', price: 1000, unit: 'per scan'),
+    ],
+    medicines: <PriceItem>[
+      PriceItem(name: 'Ace Plus', price: 22, unit: 'per strip of 10'),
+      PriceItem(name: 'Ciprocin 500mg', price: 190, unit: 'per strip of 10'),
+      PriceItem(name: 'Flugal 150mg', price: 90, unit: 'per capsule'),
+      PriceItem(name: 'Orsaline-N', price: 6, unit: 'per sachet'),
+      PriceItem(name: 'Antacid Plus', price: 55, unit: 'per bottle'),
+      PriceItem(name: 'Histacin 4mg', price: 18, unit: 'per strip of 10'),
+    ],
+  ),
+  DiagnosticCenter(
+    id: 'c6',
+    name: 'Trust Medical Care & Diagnostic',
+    location: 'Amberkhana, Sylhet',
+    rating: 4.3,
+    openingHours: '8:30 AM – 10:00 PM',
+    tests: <PriceItem>[
+      PriceItem(name: 'X-Ray (Knee Joint)', price: 650, unit: 'per plate'),
+      PriceItem(name: 'X-Ray (Lumbar Spine)', price: 850, unit: 'per plate'),
+      PriceItem(name: 'Bone Densitometry', price: 3200, unit: 'per scan'),
+      PriceItem(name: 'Serum Calcium', price: 500, unit: 'per test'),
+      PriceItem(name: 'RA Factor', price: 700, unit: 'per test'),
+      PriceItem(name: 'CBC (Complete Blood Count)', price: 400, unit: 'per test'),
+      PriceItem(name: 'ECG', price: 480, unit: 'per test'),
+    ],
+    medicines: <PriceItem>[
+      PriceItem(name: 'Tufnil 200mg', price: 105, unit: 'per strip of 10'),
+      PriceItem(name: 'Etorix 60mg', price: 160, unit: 'per strip of 10'),
+      PriceItem(name: 'Calbo 500mg', price: 120, unit: 'per strip of 10'),
+      PriceItem(name: 'Renova D', price: 210, unit: 'per strip of 10'),
+      PriceItem(name: 'Myoril 4mg', price: 240, unit: 'per strip of 10'),
+      PriceItem(name: 'Napa Rapid', price: 20, unit: 'per strip of 10'),
+    ],
+  ),
+  DiagnosticCenter(
+    id: 'c7',
+    name: 'Park View Diagnostic Centre',
+    location: 'Kajolshah, Sylhet',
+    rating: 4.5,
+    openingHours: '8:00 AM – 10:00 PM',
+    tests: <PriceItem>[
+      PriceItem(name: 'MRI (Brain)', price: 7000, unit: 'per scan'),
+      PriceItem(name: 'CT Scan (Chest)', price: 5000, unit: 'per scan'),
+      PriceItem(name: 'Ultrasonogram (Pregnancy Profile)', price: 1350, unit: 'per scan'),
+      PriceItem(name: 'Thyroid Profile (TSH)', price: 950, unit: 'per test'),
+      PriceItem(name: 'Liver Function Test', price: 1300, unit: 'per panel'),
+      PriceItem(name: 'Eye Pressure (Tonometry)', price: 400, unit: 'per test'),
+      PriceItem(name: 'CBC (Complete Blood Count)', price: 420, unit: 'per test'),
+    ],
+    medicines: <PriceItem>[
+      PriceItem(name: 'Optimox Eye Drop', price: 95, unit: 'per bottle'),
+      PriceItem(name: 'Moist Eye Drop', price: 140, unit: 'per bottle'),
+      PriceItem(name: 'Neuro-B', price: 180, unit: 'per strip of 10'),
+      PriceItem(name: 'Pantonix 40mg', price: 150, unit: 'per strip of 10'),
+      PriceItem(name: 'Napa 500mg', price: 12, unit: 'per strip of 10'),
+      PriceItem(name: 'Zinc-B', price: 75, unit: 'per bottle'),
+    ],
+  ),
+  DiagnosticCenter(
+    id: 'c8',
+    name: 'Al-Haramain Diagnostic Centre',
+    location: 'Sobhanighat, Sylhet',
+    rating: 4.4,
+    openingHours: '7:30 AM – 10:30 PM',
+    tests: <PriceItem>[
+      PriceItem(name: 'ECG', price: 470, unit: 'per test'),
+      PriceItem(name: 'EEG', price: 2000, unit: 'per test'),
+      PriceItem(name: 'Nerve Conduction Study', price: 3500, unit: 'per test'),
+      PriceItem(name: 'Blood Sugar (2 Hours ABF)', price: 260, unit: 'per test'),
+      PriceItem(name: 'Serum Creatinine', price: 430, unit: 'per test'),
+      PriceItem(name: 'Ultrasonogram (Whole Abdomen)', price: 1150, unit: 'per scan'),
+      PriceItem(name: 'X-Ray (Chest P/A)', price: 680, unit: 'per plate'),
+    ],
+    medicines: <PriceItem>[
+      PriceItem(name: 'Epinid 300mg', price: 260, unit: 'per strip of 10'),
+      PriceItem(name: 'Migratol', price: 130, unit: 'per strip of 10'),
+      PriceItem(name: 'Neuro-B Plus', price: 200, unit: 'per strip of 10'),
+      PriceItem(name: 'Sergel 20mg', price: 95, unit: 'per strip of 10'),
+      PriceItem(name: 'Napa 500mg', price: 12, unit: 'per strip of 10'),
+      PriceItem(name: 'Rivotril 0.5mg', price: 175, unit: 'per strip of 10'),
     ],
   ),
 ];
