@@ -7,7 +7,6 @@ import '../utils/app_theme.dart';
 import '../utils/context_colors.dart';
 import 'serial_badge.dart';
 
-/// A booked appointment as shown in the Upcoming / History tabs.
 class AppointmentCard extends StatelessWidget {
   const AppointmentCard({
     super.key,

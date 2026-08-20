@@ -4,8 +4,7 @@ import 'package:flutter/services.dart';
 import '../utils/app_text_styles.dart';
 import '../utils/context_colors.dart';
 
-/// A labelled [TextFormField] with consistent spacing and an optional
-/// show/hide toggle for passwords.
+
 class AppTextField extends StatefulWidget {
   const AppTextField({
     super.key,

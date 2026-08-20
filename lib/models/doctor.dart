@@ -21,7 +21,7 @@ class Doctor {
     required this.startMinute,
     required this.consultMinutes,
     required this.dailyLimit,
-    this.imageAsset,
+    this.customImageAsset,
   });
 
   final String id;
@@ -47,12 +47,21 @@ class Doctor {
   /// Maximum patients accepted per day. Booking closes once this is reached.
   final int dailyLimit;
 
-  /// Optional asset path. Falls back to initials when null or missing.
-  final String? imageAsset;
+  /// Optional override for the photo path. Leave null to use the convention.
+  final String? customImageAsset;
 
   // ---------------------------------------------------------------------
   // Derived values
   // ---------------------------------------------------------------------
+
+  /// Photo path, by convention `assets/images/doctors/<id>.jpg`.
+  ///
+  /// Photos are matched to doctors by filename rather than being listed in the
+  /// demo data, so adding a picture means dropping in a file — no code change.
+  /// If the file is missing, [AvatarImage] falls back to the doctor's initials
+  /// automatically, so the app looks complete either way.
+  String get imageAsset =>
+      customImageAsset ?? 'assets/images/doctors/$id.jpg';
 
   TimeOfDay get startTime => TimeOfDay(hour: startHour, minute: startMinute);
 
@@ -80,10 +89,10 @@ class Doctor {
   /// The core scheduling formula:
   /// `start time + (serial - 1) * consultMinutes`
   String estimatedTimeForSerial(int serial) => TimeUtils.estimatedArrival(
-        start: startTime,
-        serial: serial,
-        consultMinutes: consultMinutes,
-      );
+    start: startTime,
+    serial: serial,
+    consultMinutes: consultMinutes,
+  );
 
   /// When the doctor's session is expected to finish at full capacity.
   String get sessionEndLabel => estimatedTimeForSerial(dailyLimit);
