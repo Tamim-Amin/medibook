@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../data/demo_doctors.dart';
 import '../../models/doctor.dart';
+import '../../providers/appointment_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/doctor_provider.dart';
 import '../../providers/favorites_provider.dart';
@@ -15,6 +16,7 @@ import '../../widgets/category_tile.dart';
 import '../../widgets/doctor_card.dart';
 import '../../widgets/section_header.dart';
 import '../../widgets/skeleton_loader.dart';
+import 'notifications_sheet.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,9 +26,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-    @override
+  @override
   void initState() {
     super.initState();
+    // Read the provider synchronously, then defer the call itself —
+    // notifyListeners() cannot fire during a build.
     final DoctorProvider doctors = context.read<DoctorProvider>();
     Future<void>.microtask(() => doctors.loadDoctors());
   }
@@ -39,6 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final DoctorProvider doctors = context.watch<DoctorProvider>();
     final FavoritesProvider favorites = context.watch<FavoritesProvider>();
+    final int reminderCount =
+        context.watch<AppointmentProvider>().upcoming.length;
     final String firstName =
         context.watch<AuthProvider>().currentUser?.name.split(' ').first ??
             'there';
@@ -51,7 +57,11 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 90),
             children: <Widget>[
-              _Greeting(name: firstName),
+              _Greeting(
+                name: firstName,
+                reminderCount: reminderCount,
+                onBellTap: () => NotificationsSheet.show(context),
+              ),
               const SizedBox(height: 18),
               _SearchBar(onTap: _openList),
               const SizedBox(height: 18),
@@ -122,9 +132,15 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _Greeting extends StatelessWidget {
-  const _Greeting({required this.name});
+  const _Greeting({
+    required this.name,
+    required this.reminderCount,
+    required this.onBellTap,
+  });
 
   final String name;
+  final int reminderCount;
+  final VoidCallback onBellTap;
 
   String get _timeOfDay {
     final int hour = DateTime.now().hour;
@@ -157,16 +173,49 @@ class _Greeting extends StatelessWidget {
             ],
           ),
         ),
-        Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(
-            color: context.cSurface,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: context.cBorder),
+        InkWell(
+          onTap: onBellTap,
+          borderRadius: BorderRadius.circular(14),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: <Widget>[
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: context.cSurface,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: context.cBorder),
+                ),
+                child: Icon(Icons.notifications_none_rounded,
+                    size: 22, color: context.cTextSecondary),
+              ),
+              if (reminderCount > 0)
+                Positioned(
+                  top: -3,
+                  right: -3,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 5, vertical: 2),
+                    constraints: const BoxConstraints(minWidth: 18),
+                    decoration: BoxDecoration(
+                      color: AppColors.error,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: context.cBackground, width: 2),
+                    ),
+                    child: Text(
+                      reminderCount > 9 ? '9+' : '$reminderCount',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.caption.copyWith(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
-          child: Icon(Icons.notifications_none_rounded,
-              size: 22, color: context.cTextSecondary),
         ),
       ],
     );
