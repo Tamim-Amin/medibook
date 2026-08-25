@@ -7,6 +7,7 @@ import '../utils/app_theme.dart';
 import '../utils/context_colors.dart';
 import 'serial_badge.dart';
 
+/// A booked appointment as shown in the Upcoming / History tabs.
 class AppointmentCard extends StatelessWidget {
   const AppointmentCard({
     super.key,
@@ -46,6 +47,7 @@ class AppointmentCard extends StatelessWidget {
           color: context.cSurface,
           borderRadius: BorderRadius.circular(AppTheme.radius),
           border: Border.all(color: context.cBorder),
+          boxShadow: AppTheme.cardShadow(context.isDark),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +65,7 @@ class AppointmentCard extends StatelessWidget {
                 ),
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                  const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
                   decoration: BoxDecoration(
                     color: statusColor.withValues(alpha: 0.14),
                     borderRadius: BorderRadius.circular(20),
@@ -82,7 +84,8 @@ class AppointmentCard extends StatelessWidget {
             const SizedBox(height: 3),
             Text(
               '${appointment.specialty}  ·  ${appointment.hospital}',
-              style: AppTextStyles.caption.copyWith(color: context.cTextSecondary),
+              style:
+              AppTextStyles.caption.copyWith(color: context.cTextSecondary),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

@@ -12,6 +12,7 @@ import '../../utils/time_utils.dart';
 import '../../widgets/doctor_card.dart';
 import '../../widgets/empty_state_view.dart';
 import '../../widgets/skeleton_loader.dart';
+import '../home/home_screen.dart' show DoctorProfileArgs;
 
 /// Searchable, filterable list of doctors.
 ///
@@ -33,16 +34,15 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
   @override
   void initState() {
     super.initState();
-    Future<void>.microtask(() async {
-      if (!mounted) return;
-      final DoctorProvider provider = context.read<DoctorProvider>();
-      await provider.loadDoctors();
+    final DoctorProvider provider = context.read<DoctorProvider>();
 
+    Future<void>.microtask(() async {
+      await provider.loadDoctors();
       provider.clearFilters();
       if (widget.initialSpecialty != null) {
         provider.setSpecialty(widget.initialSpecialty);
       }
-      _search.text = provider.searchQuery;
+      if (mounted) _search.text = provider.searchQuery;
     });
   }
 
@@ -86,12 +86,12 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
                 suffixIcon: provider.searchQuery.isEmpty
                     ? null
                     : IconButton(
-                        icon: const Icon(Icons.close_rounded, size: 19),
-                        onPressed: () {
-                          _search.clear();
-                          context.read<DoctorProvider>().setSearchQuery('');
-                        },
-                      ),
+                  icon: const Icon(Icons.close_rounded, size: 19),
+                  onPressed: () {
+                    _search.clear();
+                    context.read<DoctorProvider>().setSearchQuery('');
+                  },
+                ),
               ),
             ),
           ),
@@ -99,11 +99,11 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
             label: 'Specialty',
             children: kSpecialties
                 .map((Specialty s) => _Chip(
-                      label: s.name,
-                      isSelected: provider.selectedSpecialty == s.name,
-                      onTap: () =>
-                          context.read<DoctorProvider>().setSpecialty(s.name),
-                    ))
+              label: s.name,
+              isSelected: provider.selectedSpecialty == s.name,
+              onTap: () =>
+                  context.read<DoctorProvider>().setSpecialty(s.name),
+            ))
                 .toList(),
           ),
           _FilterRow(
@@ -135,44 +135,48 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
           Expanded(
             child: provider.isLoading
                 ? ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
-                    itemCount: 4,
-                    separatorBuilder: (_, _) => const SizedBox(height: 12),
-                    itemBuilder: (_, _) => const DoctorCardSkeleton(),
-                  )
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+              itemCount: 4,
+              separatorBuilder: (_, _) => const SizedBox(height: 12),
+              itemBuilder: (_, _) => const DoctorCardSkeleton(),
+            )
                 : results.isEmpty
-                    ? EmptyStateView(
-                        icon: Icons.search_off_rounded,
-                        title: 'No doctors match',
-                        message:
-                            'Try a different specialty, pick another day, or clear '
-                            'the filters to see everyone.',
-                        actionLabel: 'Clear filters',
-                        onAction: () {
-                          _search.clear();
-                          context.read<DoctorProvider>().clearFilters();
-                        },
-                      )
-                    : ListView.separated(
-                        padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
-                        itemCount: results.length,
-                        separatorBuilder: (_, _) => const SizedBox(height: 12),
-                        itemBuilder: (BuildContext context, int i) {
-                          final Doctor doctor = results[i];
-                          return DoctorCard(
-                            doctor: doctor,
-                            isFavorite: favorites.isFavorite(doctor.id),
-                            onFavoriteToggle: () => context
-                                .read<FavoritesProvider>()
-                                .toggle(doctor.id),
-                            onTap: () => Navigator.pushNamed(
-                              context,
-                              AppRoutes.doctorProfile,
-                              arguments: doctor,
-                            ),
-                          );
-                        },
-                      ),
+                ? EmptyStateView(
+              icon: Icons.search_off_rounded,
+              title: 'No doctors match',
+              message:
+              'Try a different specialty, pick another day, or clear '
+                  'the filters to see everyone.',
+              actionLabel: 'Clear filters',
+              onAction: () {
+                _search.clear();
+                context.read<DoctorProvider>().clearFilters();
+              },
+            )
+                : ListView.separated(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+              itemCount: results.length,
+              separatorBuilder: (_, _) => const SizedBox(height: 12),
+              itemBuilder: (BuildContext context, int i) {
+                final Doctor doctor = results[i];
+                return DoctorCard(
+                  doctor: doctor,
+                  heroPrefix: 'list',
+                  isFavorite: favorites.isFavorite(doctor.id),
+                  onFavoriteToggle: () => context
+                      .read<FavoritesProvider>()
+                      .toggle(doctor.id),
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    AppRoutes.doctorProfile,
+                    arguments: DoctorProfileArgs(
+                      doctor: doctor,
+                      heroPrefix: 'list',
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),

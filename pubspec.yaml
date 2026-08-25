@@ -77,6 +77,8 @@ flutter:
   assets:
     - assets/images/
     - assets/images/doctors/
+    - assets/images/onboarding/
+    - assets/icon/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -108,3 +110,16 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/icon/app_icon_foreground.png"
+
+flutter_native_splash:
+  color: "#6C5CE7"
+  image: assets/icon/app_icon_foreground.png
+  android_12:
+    color: "#6C5CE7"
+    image: assets/icon/app_icon_foreground.png

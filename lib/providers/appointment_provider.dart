@@ -35,6 +35,11 @@ class AppointmentProvider extends ChangeNotifier {
   List<Appointment> _appointments = <Appointment>[];
   bool _isLoading = false;
 
+  int _idCounter = 0;
+
+  String _generateId() =>
+      '${DateTime.now().microsecondsSinceEpoch}-${_idCounter++}';
+
   bool get isLoading => _isLoading;
 
   List<Appointment> get all => List<Appointment>.unmodifiable(_appointments);
@@ -165,7 +170,7 @@ class AppointmentProvider extends ChangeNotifier {
     final int serial = nextSerial(doctor, day);
 
     final Appointment appointment = Appointment(
-      id: DateTime.now().microsecondsSinceEpoch.toString(),
+      id: _generateId(),
       doctorId: doctor.id,
       doctorName: doctor.name,
       specialty: doctor.specialty,
@@ -219,6 +224,7 @@ class AppointmentProvider extends ChangeNotifier {
       patientAge: appointment.patientAge,
       patientPhone: appointment.patientPhone,
       problem: appointment.problem,
+
     );
   }
 

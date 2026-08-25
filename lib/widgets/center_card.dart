@@ -25,6 +25,7 @@ class CenterCard extends StatelessWidget {
           color: context.cSurface,
           borderRadius: BorderRadius.circular(AppTheme.radius),
           border: Border.all(color: context.cBorder),
+          boxShadow: AppTheme.cardShadow(context.isDark),
         ),
         child: Row(
           children: <Widget>[

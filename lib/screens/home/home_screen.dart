@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/demo_doctors.dart';
+import '../../models/appointment.dart';
 import '../../models/doctor.dart';
 import '../../providers/appointment_provider.dart';
 import '../../providers/auth_provider.dart';
@@ -14,6 +15,7 @@ import '../../utils/app_theme.dart';
 import '../../utils/context_colors.dart';
 import '../../widgets/category_tile.dart';
 import '../../widgets/doctor_card.dart';
+import '../../widgets/next_appointment_card.dart';
 import '../../widgets/section_header.dart';
 import '../../widgets/skeleton_loader.dart';
 import 'notifications_sheet.dart';
@@ -43,8 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final DoctorProvider doctors = context.watch<DoctorProvider>();
     final FavoritesProvider favorites = context.watch<FavoritesProvider>();
-    final int reminderCount =
-        context.watch<AppointmentProvider>().upcoming.length;
+    final List<Appointment> upcoming =
+        context.watch<AppointmentProvider>().upcoming;
     final String firstName =
         context.watch<AuthProvider>().currentUser?.name.split(' ').first ??
             'there';
@@ -59,13 +61,26 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               _Greeting(
                 name: firstName,
-                reminderCount: reminderCount,
+                reminderCount: upcoming.length,
                 onBellTap: () => NotificationsSheet.show(context),
               ),
               const SizedBox(height: 18),
               _SearchBar(onTap: _openList),
               const SizedBox(height: 18),
-              const _HeroBanner(),
+              // The next appointment is the single most useful thing to show a
+              // returning patient; the generic banner is only for new users.
+              if (upcoming.isNotEmpty)
+                NextAppointmentCard(
+                  appointment: upcoming.first,
+                  onTap: () => Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRoutes.main,
+                        (Route<dynamic> r) => false,
+                    arguments: 1,
+                  ),
+                )
+              else
+                const _HeroBanner(),
               const SectionHeader(title: 'Specialties'),
               GridView.builder(
                 shrinkWrap: true,
@@ -112,13 +127,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.only(bottom: 12),
                     child: DoctorCard(
                       doctor: doctor,
+                      heroPrefix: 'home',
                       isFavorite: favorites.isFavorite(doctor.id),
                       onFavoriteToggle: () =>
                           context.read<FavoritesProvider>().toggle(doctor.id),
                       onTap: () => Navigator.pushNamed(
                         context,
                         AppRoutes.doctorProfile,
-                        arguments: doctor,
+                        arguments: DoctorProfileArgs(
+                          doctor: doctor,
+                          heroPrefix: 'home',
+                        ),
                       ),
                     ),
                   ),
@@ -129,6 +148,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
+
+/// Route arguments for the doctor profile screen.
+///
+/// The hero prefix travels with the doctor so the profile animates from
+/// whichever list the user tapped.
+class DoctorProfileArgs {
+  const DoctorProfileArgs({required this.doctor, required this.heroPrefix});
+
+  final Doctor doctor;
+  final String heroPrefix;
 }
 
 class _Greeting extends StatelessWidget {
@@ -186,6 +216,7 @@ class _Greeting extends StatelessWidget {
                   color: context.cSurface,
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(color: context.cBorder),
+                  boxShadow: AppTheme.cardShadow(context.isDark),
                 ),
                 child: Icon(Icons.notifications_none_rounded,
                     size: 22, color: context.cTextSecondary),
@@ -195,8 +226,8 @@ class _Greeting extends StatelessWidget {
                   top: -3,
                   right: -3,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 5, vertical: 2),
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                     constraints: const BoxConstraints(minWidth: 18),
                     decoration: BoxDecoration(
                       color: AppColors.error,
@@ -238,6 +269,7 @@ class _SearchBar extends StatelessWidget {
           color: context.cSurface,
           borderRadius: BorderRadius.circular(AppTheme.radius),
           border: Border.all(color: context.cBorder),
+          boxShadow: AppTheme.cardShadow(context.isDark),
         ),
         child: Row(
           children: <Widget>[

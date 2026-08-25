@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'models/appointment.dart';
+import 'models/diagnostic_center.dart';
 import 'models/doctor.dart';
 import 'providers/appointment_provider.dart';
 import 'providers/auth_provider.dart';
@@ -13,17 +14,17 @@ import 'screens/auth/register_screen.dart';
 import 'screens/auth/welcome_screen.dart';
 import 'screens/booking/booking_confirmation_screen.dart';
 import 'screens/booking/booking_screen.dart';
+import 'screens/diagnostics/center_details_screen.dart';
 import 'screens/doctors/doctor_list_screen.dart';
 import 'screens/doctors/doctor_profile_screen.dart';
+import 'screens/home/home_screen.dart' show DoctorProfileArgs;
 import 'screens/main_shell.dart';
 import 'screens/onboarding/onboarding_screen.dart';
+import 'screens/profile/edit_profile_screen.dart';
 import 'screens/profile/favorites_screen.dart';
 import 'screens/splash_screen.dart';
 import 'utils/app_routes.dart';
 import 'utils/app_theme.dart';
-import 'models/diagnostic_center.dart';
-import 'screens/diagnostics/center_details_screen.dart';
-import 'screens/profile/edit_profile_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,6 +62,7 @@ class MediBookApp extends StatelessWidget {
               AppRoutes.login: (_) => const LoginScreen(),
               AppRoutes.register: (_) => const RegisterScreen(),
               AppRoutes.favorites: (_) => const FavoritesScreen(),
+              AppRoutes.editProfile: (_) => const EditProfileScreen(),
               AppRoutes.main: (BuildContext context) {
                 final Object? args =
                     ModalRoute.of(context)?.settings.arguments;
@@ -74,9 +76,15 @@ class MediBookApp extends StatelessWidget {
                 );
               },
               AppRoutes.doctorProfile: (BuildContext context) {
-                final Doctor doctor =
-                    ModalRoute.of(context)!.settings.arguments! as Doctor;
-                return DoctorProfileScreen(doctor: doctor);
+                final Object? args =
+                    ModalRoute.of(context)!.settings.arguments;
+                if (args is DoctorProfileArgs) {
+                  return DoctorProfileScreen(
+                    doctor: args.doctor,
+                    heroPrefix: args.heroPrefix,
+                  );
+                }
+                return DoctorProfileScreen(doctor: args! as Doctor);
               },
               AppRoutes.booking: (BuildContext context) {
                 final Object? args =
@@ -91,15 +99,15 @@ class MediBookApp extends StatelessWidget {
               },
               AppRoutes.bookingConfirmation: (BuildContext context) {
                 final Appointment appointment =
-                    ModalRoute.of(context)!.settings.arguments! as Appointment;
+                ModalRoute.of(context)!.settings.arguments! as Appointment;
                 return BookingConfirmationScreen(appointment: appointment);
               },
               AppRoutes.centerDetails: (BuildContext context) {
-                final DiagnosticCenter center =
-                    ModalRoute.of(context)!.settings.arguments! as DiagnosticCenter;
+                final DiagnosticCenter center = ModalRoute.of(context)!
+                    .settings
+                    .arguments! as DiagnosticCenter;
                 return CenterDetailsScreen(center: center);
               },
-              AppRoutes.editProfile: (_) => const EditProfileScreen(),
             },
           );
         },

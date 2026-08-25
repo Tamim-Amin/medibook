@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
@@ -8,6 +9,32 @@ class AppTheme {
   AppTheme._();
 
   static const double radius = 14;
+
+  /// Soft elevation used on every card surface.
+  ///
+  /// Dark mode gets no shadow — on a dark background a drop shadow is
+  /// invisible at best and muddy at worst. Contrast comes from the border
+  /// instead.
+  static List<BoxShadow> cardShadow(bool isDark) => isDark
+      ? const <BoxShadow>[]
+      : <BoxShadow>[
+    BoxShadow(
+      color: const Color(0xFF1E1E2D).withValues(alpha: 0.05),
+      blurRadius: 14,
+      offset: const Offset(0, 4),
+    ),
+  ];
+
+  /// Slide-in page transitions on every named route.
+  ///
+  /// Android's default is a vertical fade-through; the horizontal slide reads
+  /// better for a drill-down flow like doctor → profile → booking.
+  static const PageTransitionsTheme _transitions = PageTransitionsTheme(
+    builders: <TargetPlatform, PageTransitionsBuilder>{
+      TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+    },
+  );
 
   // ---------------------------------------------------------------------
   // LIGHT
@@ -29,6 +56,7 @@ class AppTheme {
       fontFamily: AppTextStyles.fontFamily,
       colorScheme: scheme,
       scaffoldBackgroundColor: AppColors.background,
+      pageTransitionsTheme: _transitions,
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.background,
         foregroundColor: AppColors.textPrimary,
@@ -115,6 +143,7 @@ class AppTheme {
       fontFamily: AppTextStyles.fontFamily,
       colorScheme: scheme,
       scaffoldBackgroundColor: AppColors.darkBackground,
+      pageTransitionsTheme: _transitions,
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.darkBackground,
         foregroundColor: AppColors.darkTextPrimary,
@@ -153,8 +182,8 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.darkSurface,
-        hintStyle:
-        AppTextStyles.bodySmall.copyWith(color: AppColors.darkTextSecondary),
+        hintStyle: AppTextStyles.bodySmall
+            .copyWith(color: AppColors.darkTextSecondary),
         contentPadding:
         const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         border: _outline(AppColors.darkBorder),

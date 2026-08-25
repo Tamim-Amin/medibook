@@ -16,6 +16,7 @@ class DoctorCard extends StatelessWidget {
     this.isFavorite = false,
     this.onFavoriteToggle,
     this.showAvailability = true,
+    this.heroPrefix = 'card',
   });
 
   final Doctor doctor;
@@ -23,6 +24,11 @@ class DoctorCard extends StatelessWidget {
   final bool isFavorite;
   final VoidCallback? onFavoriteToggle;
   final bool showAvailability;
+
+  /// Hero tags must be unique per screen. The same doctor can appear on Home
+  /// and in the listing at once (both are alive in the widget tree), so each
+  /// caller passes its own prefix to keep the tags distinct.
+  final String heroPrefix;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +41,7 @@ class DoctorCard extends StatelessWidget {
           color: context.cSurface,
           borderRadius: BorderRadius.circular(AppTheme.radius),
           border: Border.all(color: context.cBorder),
+          boxShadow: AppTheme.cardShadow(context.isDark),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,10 +49,13 @@ class DoctorCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                AvatarImage(
-                  initials: doctor.initials,
-                  imageAsset: doctor.imageAsset,
-                  size: 60,
+                Hero(
+                  tag: '$heroPrefix-doctor-${doctor.id}',
+                  child: AvatarImage(
+                    initials: doctor.initials,
+                    imageAsset: doctor.imageAsset,
+                    size: 60,
+                  ),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
@@ -93,12 +103,16 @@ class DoctorCard extends StatelessWidget {
                     behavior: HitTestBehavior.opaque,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 6, bottom: 6),
-                      child: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
-                        size: 22,
-                        color: isFavorite
-                            ? AppColors.error
-                            : context.cTextSecondary,
+                      child: AnimatedScale(
+                        scale: isFavorite ? 1.15 : 1.0,
+                        duration: const Duration(milliseconds: 180),
+                        child: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          size: 22,
+                          color: isFavorite
+                              ? AppColors.error
+                              : context.cTextSecondary,
+                        ),
                       ),
                     ),
                   ),
@@ -127,7 +141,7 @@ class DoctorCard extends StatelessWidget {
               Container(
                 width: double.infinity,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                 decoration: BoxDecoration(
                   color: context.cPrimary.withValues(alpha: 0.10),
                   borderRadius: BorderRadius.circular(8),
@@ -140,8 +154,8 @@ class DoctorCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         '${doctor.availableDaysLabel}  ·  from ${doctor.startTimeLabel}',
-                        style:
-                            AppTextStyles.caption.copyWith(color: context.cPrimary),
+                        style: AppTextStyles.caption
+                            .copyWith(color: context.cPrimary),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
