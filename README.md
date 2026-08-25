@@ -158,44 +158,35 @@ Counting only *active* bookings would break the system — the next patient woul
 
 ## 📸 Screenshots
 
-<!--
-HOW TO ADD YOUR SCREENSHOTS
-1. Create a folder named `screenshots` in the project root.
-2. Save your images there using EXACTLY the filenames below.
-3. That's it — the tables render automatically. Delete any row you don't have.
--->
-
 ### Onboarding & Authentication
 
 | Onboarding | Welcome | Login |
 |:---:|:---:|:---:|
 | <img src="screenshots/01_onboarding.png" width="230"> | <img src="screenshots/02_welcome.png" width="230"> | <img src="screenshots/03_login.png" width="230"> |
 
-### Discovery
+### Doctor Discovery
 
-| Home | Filtered Listing | Doctor Profile |
+| Home | Doctor Listing | Doctor Profile |
 |:---:|:---:|:---:|
 | <img src="screenshots/04_home.png" width="230"> | <img src="screenshots/05_doctor_list_filtered.png" width="230"> | <img src="screenshots/06_doctor_profile.png" width="230"> |
 
-### Booking — the core flow
+### Booking Flow
 
-| Serial Preview | Confirmation |
+| Book Appointment | Appointment Confirmed |
 |:---:|:---:|
-| <img src="screenshots/07_booking.png" width="230"> |  <img src="screenshots/09_confirmation.png" width="230"> |
+| <img src="screenshots/07_booking.png" width="230"> | <img src="screenshots/09_confirmation.png" width="230"> |
 
-### Management & Extras
+### Appointment Management
 
-| My Appointments | Diagnostics | Dark Mode |
-|:---:|:---:|:---:|
-| <img src="screenshots/10_appointments.png" width="230"> | <img src="screenshots/11_diagnostics.png" width="230"> | <img src="screenshots/12_dark_mode.png" width="230"> |
+| My Appointments |
+|:---:|
+| <img src="screenshots/10_appointments.png" width="230"> |
 
-<!--
-OPTIONAL EXTRA ROW — uncomment if you capture these:
+### Diagnostics & Dark Mode
 
-| Notifications | Favourites | Edit Profile |
-|:---:|:---:|:---:|
-| <img src="screenshots/13_notifications.png" width="230"> | <img src="screenshots/14_favorites.png" width="230"> | <img src="screenshots/15_edit_profile.png" width="230"> |
--->
+| Diagnostic Centres | Centre Details (Dark Mode) |
+|:---:|:---:|
+| <img src="screenshots/11_diagnostics.png" width="230"> | <img src="screenshots/12_dark_mode.png" width="230"> |
 
 ---
 
